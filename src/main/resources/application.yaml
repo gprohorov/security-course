@@ -1,0 +1,13 @@
+server:
+  port: 8081
+
+spring:
+  data:
+    mongodb:
+      database: security_course
+      host: localhost
+      port: 27017
+  security:
+    user:
+      name: admin
+      password: admin
