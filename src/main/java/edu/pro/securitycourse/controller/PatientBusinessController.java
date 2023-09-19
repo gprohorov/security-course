@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -30,7 +31,9 @@ public class PatientBusinessController {
 
     @GetMapping("/")
     List<Patient> getAllSortedByName() {
-        return patientService.getAll();
+        return patientService.getAll()
+                .stream().sorted(Comparator.comparing(Patient::getName))
+                .toList();
     }
 
     @GetMapping("/hello")
