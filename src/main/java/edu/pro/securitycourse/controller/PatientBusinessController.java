@@ -19,7 +19,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/business/patients")
+@RequestMapping("/api/v2/patients")
 public class PatientBusinessController {
 
     private final PatientService patientService;
@@ -38,7 +38,7 @@ public class PatientBusinessController {
 
     @GetMapping("/hello")
     String sayHello() {
-        return "Hello";
+        return "Hello user";
     }
 
 

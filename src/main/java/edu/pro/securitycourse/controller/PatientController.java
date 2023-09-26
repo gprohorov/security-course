@@ -53,7 +53,7 @@ public class PatientController {
 
     @GetMapping("/hello")
     String sayHello() {
-        return "Hello";
+        return "Hello admin";
     }
 
 
