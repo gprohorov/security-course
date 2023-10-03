@@ -11,12 +11,14 @@ import edu.pro.securitycourse.model.Patient;
 import edu.pro.securitycourse.repository.PatientRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@PreAuthorize("hasRole('ADMIN')")
 public class PatientService {
 
     private final PatientRepository patientRepository;
@@ -37,6 +39,7 @@ public class PatientService {
         patientRepository.deleteAll();
         patientRepository.saveAll(patients);
     }
+
 
     public List<Patient> getAll(){
         return patientRepository.findAll();

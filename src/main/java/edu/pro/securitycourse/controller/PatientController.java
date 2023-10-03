@@ -10,6 +10,7 @@ package edu.pro.securitycourse.controller;
 import edu.pro.securitycourse.model.Patient;
 import edu.pro.securitycourse.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class PatientController {
     public PatientController(PatientService patientService) {
         this.patientService = patientService;
     }
+
 
     @GetMapping("/")
     List<Patient> getAll() {
@@ -50,6 +52,7 @@ public class PatientController {
     Patient updateOne(@RequestBody Patient patient) {
         return patientService.update(patient);
     }
+
 
     @GetMapping("/hello")
     String sayHello() {

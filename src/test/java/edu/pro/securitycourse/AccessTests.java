@@ -36,7 +36,6 @@ class AccessTests {
                 .webAppContextSetup(context).apply(springSecurity())
                 .build();
     }
-
     @Test
     @WithAnonymousUser
     void unableGetAllIfNotAuthorized() throws Exception {
@@ -55,7 +54,42 @@ class AccessTests {
         mockMvc.perform(get("/index.html"))
                 .andExpect(status().isOk());
     }
+    @Test
+    @WithMockUser(username = "user", password = "user", roles = {"User"})
+    void disableGetAllIfNotAuthorized() throws Exception {
+        mockMvc.perform(get("/api/v1/patients/"))
+                .andExpect(status().isForbidden());
+    }
+        @Test
+    @WithMockUser(username = "user", password = "user")
+    void enableGetAllIfUserHasCreds() throws Exception {
+        mockMvc.perform(get("/api/v2/patients/"))
+                .andExpect(status().isForbidden());
+    }
 
-
+    @Test
+    @WithMockUser(username = "admin", password = "admin", roles = {"ADMIN"})
+    void disableGetAllIfHasNoRole() throws Exception {
+        mockMvc.perform(get("/api/v2/patients/"))
+                .andExpect(status().isForbidden());
+    }
+    @Test
+    @WithMockUser( roles = {"ADMIN"})
+    void enableGetAllIfHasRole() throws Exception {
+        mockMvc.perform(get("/api/v1/patients/"))
+                .andExpect(status().isOk());
+    }
+    @Test
+    @WithMockUser(username = "admin", password = "admin")
+    void enableGetAllIfHasCreds() throws Exception {
+        mockMvc.perform(get("/api/v2/patients/"))
+                .andExpect(status().isForbidden());
+    }
+    @Test
+    @WithMockUser(username = "admin1", password = "admin", roles = {"ADMIN"})
+    void enableGetAllIfHasWrongCreds() throws Exception {
+        mockMvc.perform(get("/api/v1/patients/"))
+                .andExpect(status().isOk());
+    }
 
 }

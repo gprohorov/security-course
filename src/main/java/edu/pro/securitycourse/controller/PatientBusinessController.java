@@ -10,6 +10,7 @@ package edu.pro.securitycourse.controller;
 import edu.pro.securitycourse.model.Patient;
 import edu.pro.securitycourse.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,16 +30,17 @@ public class PatientBusinessController {
         this.patientService = patientService;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/")
     List<Patient> getAllSortedByName() {
         return patientService.getAll()
                 .stream().sorted(Comparator.comparing(Patient::getName))
                 .toList();
     }
-
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/hello")
     String sayHello() {
-        return "Hello user";
+        return "Hello user or admin";
     }
 
 

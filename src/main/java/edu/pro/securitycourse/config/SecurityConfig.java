@@ -1,7 +1,12 @@
 package edu.pro.securitycourse.config;
 
+import org.springframework.aop.Advisor;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import org.springframework.context.annotation.Role;
+import org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,11 +33,16 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
     @Bean
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+    static Advisor preAuthorizeMethodInterceptor() {
+        return AuthorizationManagerBeforeMethodInterceptor.preAuthorize();
+    }
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/patients/**").hasRole("ADMIN")
-                        .requestMatchers("/api/v2/patients/**").hasRole("USER")
+                 //       .requestMatchers("/api/v1/patients/**").hasRole("ADMIN")
+                 //       .requestMatchers("/api/v2/patients/**").hasRole("USER")
                         .requestMatchers("/index.html").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
