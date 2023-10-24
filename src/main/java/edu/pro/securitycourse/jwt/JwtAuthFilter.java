@@ -25,7 +25,7 @@ import java.io.IOException;
 
 @Configuration
 @RequiredArgsConstructor
-public class JwtAuthFiler extends OncePerRequestFilter {
+public class JwtAuthFilter extends OncePerRequestFilter {
 
     private  final JwtService jwtService;
     private  final UserDetailsService userDetailsService;
