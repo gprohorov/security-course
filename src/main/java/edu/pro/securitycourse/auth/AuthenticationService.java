@@ -23,6 +23,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
 
     public AuthenticationResponse register(RegistrationRequest request) {
+
         return null;
     }
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
