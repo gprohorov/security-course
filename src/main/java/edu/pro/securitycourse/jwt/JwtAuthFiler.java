@@ -44,7 +44,7 @@ public class JwtAuthFiler extends OncePerRequestFilter {
         }
         final String jwt = header.substring(7);
         final String username = jwtService.extractUserName(jwt);
-        if (username == null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (jwtService.isJwtValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken =
