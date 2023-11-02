@@ -31,14 +31,14 @@ public class PatientBusinessController {
     }
 
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/")
+    @GetMapping("/hello/user")
     List<Patient> getAllSortedByName() {
         return patientService.getAll()
                 .stream().sorted(Comparator.comparing(Patient::getName))
                 .toList();
     }
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    @GetMapping("/hello")
+    @GetMapping("/hello/all")
     String sayHello() {
         return "Hello user or admin";
     }
