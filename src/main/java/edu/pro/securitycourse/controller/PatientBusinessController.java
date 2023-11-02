@@ -20,7 +20,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v2/patients")
+@RequestMapping("/api/v2")
 public class PatientBusinessController {
 
     private final PatientService patientService;
@@ -31,7 +31,7 @@ public class PatientBusinessController {
     }
 
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/hello/user")
+    @GetMapping("/patients")
     List<Patient> getAllSortedByName() {
         return patientService.getAll()
                 .stream().sorted(Comparator.comparing(Patient::getName))
@@ -41,6 +41,18 @@ public class PatientBusinessController {
     @GetMapping("/hello/all")
     String sayHello() {
         return "Hello user or admin";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/hello/admin")
+    String sayHelloAdmin() {
+        return "Hello admin";
+    }
+
+    @PreAuthorize("hasAnyRole('USER')")
+    @GetMapping("/hello/user")
+    String sayHelloUser() {
+        return "Hello user";
     }
 
 
