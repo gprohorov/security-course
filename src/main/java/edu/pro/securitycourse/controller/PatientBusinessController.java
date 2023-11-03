@@ -56,4 +56,10 @@ public class PatientBusinessController {
     }
 
 
+    @GetMapping("/hello")
+    String sayHelloAnonymous() {
+        return "Hello anonymous!!!";
+    }
+
+
 }

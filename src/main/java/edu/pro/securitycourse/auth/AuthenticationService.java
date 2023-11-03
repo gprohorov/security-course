@@ -1,6 +1,9 @@
 package edu.pro.securitycourse.auth;
 
 import edu.pro.securitycourse.jwt.JwtService;
+import edu.pro.securitycourse.user.Role;
+import edu.pro.securitycourse.user.User;
+import edu.pro.securitycourse.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,10 +24,20 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
     private final JwtService jwtService;
+    private final UserService userService;
 
     public AuthenticationResponse register(RegistrationRequest request) {
-
-        return null;
+        User user = User.builder()
+                .username(request.getUsername())
+                .password(request.getPassword())
+                .email(request.getEmail())
+                .role(Role.ROLE_USER)
+                .build();
+        userService.create(user);
+        String token = jwtService.generateJwt(user);
+        return AuthenticationResponse.builder()
+                .token(token)
+                .build();
     }
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
@@ -34,7 +47,7 @@ public class AuthenticationService {
                 )
         );
         var user = userDetailsService.loadUserByUsername(request.getUsername());
-        var jwt = jwtService.generateJwt(user);
+        String jwt = jwtService.generateJwt(user);
         return AuthenticationResponse.builder()
                 .token(jwt)
                 .build();
