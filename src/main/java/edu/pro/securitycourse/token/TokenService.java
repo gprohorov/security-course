@@ -22,6 +22,7 @@ public class TokenService {
     public Token record(Token token) {
         return repository.save(token);
     }
+    public Token update(Token token) { return repository.save(token); }
 
     public List<Token> getAllValidTokensByUser(User user) {
         return repository.findTokensByUser(user).stream()
