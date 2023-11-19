@@ -1,0 +1,14 @@
+### Authenticate User
+POST http://localhost:8080/api/v1/auth/authenticate
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "user"
+}
+
+> {% client.global.set("auth-token", response.body.token);  %}
+
+### Query the hello endpoint
+GET http://localhost:8080/api/v2/hello/user
+Authorization: Bearer {{auth-token}}

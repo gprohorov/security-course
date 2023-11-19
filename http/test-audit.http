@@ -1,0 +1,37 @@
+### Register User
+POST http://localhost:8080/api/v1/auth/authenticate
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "user"
+}
+
+
+> {% client.global.set("auth-token", response.body.token);  %}
+
+
+### Create a new patient
+POST http://localhost:8080/api/v1/patients/
+Authorization: Bearer {{auth-token}}
+Content-Type: application/json
+
+{
+  "name": "Tarja",
+  "phoneNumber": "911",
+  "description": "Nightwish"
+}
+
+### Update a new patient
+PUT http://localhost:8080/api/v1/patients/
+Authorization: Bearer {{auth-token}}
+Content-Type: application/json
+
+{
+  "id": "1",
+  "name": "John Lennon",
+  "phoneNumber": "012",
+  "description": "Beatles",
+  "createdAt": "2023-10-24T19:01:48.906",
+  "updatedAt": null
+}
