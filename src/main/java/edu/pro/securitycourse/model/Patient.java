@@ -1,4 +1,5 @@
 package edu.pro.securitycourse.model;
+import edu.pro.securitycourse.audit.AuditMetadata;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -8,19 +9,18 @@ import java.util.Objects;
 
 @Document
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Patient {
+@ToString
+public class Patient extends AuditMetadata {
 
     @Id
     private String id;
     private String name;
     private String phoneNumber;
     private String description;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+
 
 
     public Patient(String name, String phoneNumber, String description) {
@@ -56,7 +56,6 @@ public class Patient {
                 ", name='" + name + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", description='" + description + '\'' +
-                ", createdAt=" + createdAt +
                 '}';
     }
 }

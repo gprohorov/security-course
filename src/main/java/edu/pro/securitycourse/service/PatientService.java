@@ -18,15 +18,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('USER')")
 public class PatientService {
 
     private final PatientRepository patientRepository;
 
     private List<Patient> patients = List.of(
-            new Patient("1", "John", "012", "Beatles", LocalDateTime.now(), null),
-            new Patient("2", "Paul", "345", "Beatles", LocalDateTime.now(), null),
-            new Patient("3", "Freddie", "678", "Queen", LocalDateTime.now(), null)
+            new Patient("1", "John", "012", "Beatles"),
+            new Patient("2", "Paul", "345", "Beatles"),
+            new Patient("3", "Freddie", "678", "Queen")
     );
 
     @Autowired
