@@ -8,19 +8,18 @@ import java.util.Objects;
 
 @Document
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Patient {
+@ToString
+public class Patient extends AuditMetadata{
 
     @Id
     private String id;
     private String name;
     private String phoneNumber;
     private String description;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+
 
 
     public Patient(String name, String phoneNumber, String description) {
@@ -49,14 +48,5 @@ public class Patient {
         return Objects.hash(getId());
     }
 
-    @Override
-    public String toString() {
-        return "Patient{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", description='" + description + '\'' +
-                ", createdAt=" + createdAt +
-                '}';
-    }
+
 }
