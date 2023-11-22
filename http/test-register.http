@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 
 
-> {% client.global.set("auth-token", response.body.access_token);  %}
+> {% client.global.set("auth-token", response.body.token);  %}
 
 
 ### Query the hello endpoint
