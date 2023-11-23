@@ -22,16 +22,16 @@ Content-Type: application/json
   "description": "Nightwish"
 }
 
-### Update a new patient
-PUT http://localhost:8080/api/v1/patients/
-Authorization: Bearer {{auth-token}}
-Content-Type: application/json
-
-{
-  "id": "1",
-  "name": "John Lennon",
-  "phoneNumber": "012",
-  "description": "Beatles",
-  "createdAt": "2023-10-24T19:01:48.906",
-  "updatedAt": null
-}
+#### Update a new patient
+#PUT http://localhost:8080/api/v1/patients/
+#Authorization: Bearer {{auth-token}}
+#Content-Type: application/json
+#
+#{
+#  "id": "1",
+#  "name": "John Lennon",
+#  "phoneNumber": "012",
+#  "description": "Beatles",
+#  "createdAt": "2023-10-24T19:01:48.906",
+#  "updatedAt": null
+#}

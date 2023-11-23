@@ -8,14 +8,15 @@ package edu.pro.securitycourse.audit;
 */
 
 import edu.pro.securitycourse.user.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
-
 public class AuditorAwareImpl implements AuditorAware<String> {
+
 
     @Override
     public Optional<String> getCurrentAuditor() {
