@@ -7,6 +7,7 @@ package edu.pro.securitycourse.auth;
   @since 16.10.23 - 22.06
 */
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 @Data
@@ -14,6 +15,9 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @Getter
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class AuthenticationResponse {
     private String token;
+    private boolean tfaEnabled;
+    private String qrImageUri;
 }

@@ -1,6 +1,7 @@
 package edu.pro.securitycourse.auth;
 
 import edu.pro.securitycourse.jwt.JwtService;
+import edu.pro.securitycourse.tfa.TfaService;
 import edu.pro.securitycourse.token.Token;
 import edu.pro.securitycourse.token.TokenService;
 import edu.pro.securitycourse.token.TokenType;
@@ -27,11 +28,11 @@ import java.util.List;
 public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
-   // private final UserDetailsService userDetailsService;
     private final JwtService jwtService;
     private final UserService userService;
     private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
+    private final TfaService tfaService;
 
     public AuthenticationResponse register(RegistrationRequest request) {
         User user = User.builder()
@@ -39,7 +40,9 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .email(request.getEmail())
                 .role(Role.ROLE_USER)
+                .tfaEnabled(request.isTfaEnabled())
                 .build();
+        if (request.isTfaEnabled()) user.setSecretWord(tfaService.generateNewSecret());
         User userRecorded = userService.create(user);
         if (userRecorded == null) {
             return AuthenticationResponse.builder()
@@ -56,6 +59,8 @@ public class AuthenticationService {
         tokenService.record(token);
         return AuthenticationResponse.builder()
                 .token(jwt)
+                .tfaEnabled(userRecorded.isTfaEnabled())
+                .qrImageUri(tfaService.generateQrCodeImageUri(user.getSecretWord()))
                 .build();
     }
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -65,7 +70,6 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
-     //   var user = userDetailsService.loadUserByUsername(request.getUsername());
         User userExtracted = userService.getUserByName(request.getUsername()).orElseThrow();
         String jwt = jwtService.generateJwt(userExtracted);
         Token token = Token.builder()

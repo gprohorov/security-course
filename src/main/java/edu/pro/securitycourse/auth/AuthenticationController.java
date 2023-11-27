@@ -21,9 +21,12 @@ public class AuthenticationController {
 
     private final AuthenticationService service;
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
+    public ResponseEntity<?> register(
             @RequestBody RegistrationRequest request){
-        return ResponseEntity.ok(service.register(request));
+        if (request.isTfaEnabled()) {
+            return ResponseEntity.ok(service.register(request));
+        }
+        return ResponseEntity.accepted().build();
     }
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(

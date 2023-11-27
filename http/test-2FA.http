@@ -1,0 +1,18 @@
+### Register User
+POST http://localhost:8080/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "username": "user2",
+  "password": "user2",
+  "email": "user2@mail.ua",
+  "tfaEnabled": true
+}
+
+
+# > {% client.global.set("auth-token", response.body.token);  %}
+#
+#
+#### Query the hello endpoint
+#GET http://localhost:8080/api/v2/hello/user
+#Authorization: Bearer {{auth-token}}
