@@ -8,10 +8,12 @@ import edu.pro.securitycourse.token.TokenType;
 import edu.pro.securitycourse.user.Role;
 import edu.pro.securitycourse.user.User;
 import edu.pro.securitycourse.user.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,7 +44,9 @@ public class AuthenticationService {
                 .role(Role.ROLE_USER)
                 .tfaEnabled(request.isTfaEnabled())
                 .build();
-        if (request.isTfaEnabled()) user.setSecretWord(tfaService.generateNewSecret());
+        if (request.isTfaEnabled()) {
+            user.setSecretWord(tfaService.generateNewSecret());
+        }
         User userRecorded = userService.create(user);
         if (userRecorded == null) {
             return AuthenticationResponse.builder()
@@ -93,4 +97,23 @@ public class AuthenticationService {
         allValidTokensByUser.forEach(token -> token.setRevoked(true));
         tokenService.recordAll(allValidTokensByUser);
     }
+    public AuthenticationResponse verifyCode(
+            VerificationRequest verificationRequest
+    ) {
+        User user = userService
+                .getUserByName(verificationRequest.getUsername())
+                .orElseThrow(() -> new EntityNotFoundException(
+                        String.format("No user found with %S", verificationRequest.getUsername()))
+                );
+        if (tfaService.isOtpNotValid(user.getSecretWord(), verificationRequest.getCode())) {
+
+            throw new BadCredentialsException("Code is not correct");
+        }
+        var jwtToken = jwtService.generateJwt(user);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .tfaEnabled(user.isTfaEnabled())
+                .build();
+    }
+
 }
