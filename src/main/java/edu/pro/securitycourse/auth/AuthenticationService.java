@@ -115,5 +115,4 @@ public class AuthenticationService {
                 .tfaEnabled(user.isTfaEnabled())
                 .build();
     }
-
 }
